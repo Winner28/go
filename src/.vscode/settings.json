@@ -1,4 +1,6 @@
 {
-    "editor.fontSize": 18
+    "editor.fontSize": 18,
+    "go.gopath": "/home/devladey/Programming/golang",
+    "go.goroot": "/usr/local/go"
 
 }
