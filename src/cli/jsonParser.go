@@ -19,21 +19,24 @@ type config struct {
 // distr string
 func ParseApp() {
 	app := cli.NewApp()
+
 	app.Name = "Parse JSON file"
-	app.Usage = "JSON file parser"
+	app.Usage = "JSON file parser with simple struct"
+
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "parse, p",
 			Usage: "parse JSON file",
-			Value: "bad file",
+			Value: "default: bad file. Please use flag [--parser] [fileName]",
 		},
 	}
+
 	app.Action = func(c *cli.Context) error {
 		fileName := c.GlobalString("parse")
 		file, err := os.Open(fileName)
 		defer file.Close()
 		if err != nil {
-			fmt.Println("bad file")
+			fmt.Println("default: bad file. Please use flag [--parser] [fileName]")
 			return err
 		}
 		decoder := json.NewDecoder(file)
@@ -45,8 +48,9 @@ func ParseApp() {
 			return err
 		}
 		fmt.Println(conf)
-		return err
+		return nil
 	}
+
 	app.Run(os.Args)
 
 }
