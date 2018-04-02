@@ -4,6 +4,7 @@ import (
 	"algos"
 	"cli"
 	"fmt"
+	"interfaces"
 )
 
 func stack() {
@@ -18,10 +19,18 @@ func stack() {
 
 }
 
-func cliParser() {
+func cliPackage() {
 	cli.ParseApp()
 }
 
+func interfacesPackage() {
+	interfaces.Run()
+}
+
 func main() {
-	stack()
+	//interfacesPackage()
+	str := "hello!"
+	t := str[1:2]
+	t = "k"
+	fmt.Println(t, str)
 }
