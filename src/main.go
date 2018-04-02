@@ -27,10 +27,10 @@ func interfacesPackage() {
 	interfaces.Run()
 }
 
+func algosListRunner() {
+	algos.RunList()
+}
+
 func main() {
-	//interfacesPackage()
-	str := "hello!"
-	t := str[1:2]
-	t = "k"
-	fmt.Println(t, str)
+	algosListRunner()
 }
