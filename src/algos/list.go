@@ -11,12 +11,15 @@ type Node struct {
 
 // List repr List
 type List struct {
-	node *Node
-	head *Node
-	tail *Node
-	size int
-	name string
+	node        *Node
+	head        *Node
+	tail        *Node
+	size        int
+	name        string
+	initialized bool
 }
+
+var globalList *List
 
 // AddNode method adds node to a list
 func (list *List) AddNode(value int) {
@@ -33,6 +36,7 @@ func (list *List) AddNode(value int) {
 // IterList iter through the list
 func (list *List) IterList() {
 	node := list.head
+	fmt.Println(list.name, " list")
 	fmt.Println("List size: ", list.size)
 	fmt.Println("Head value: ", list.head.value)
 	fmt.Println("Tail value: ", list.tail.value)
@@ -43,8 +47,12 @@ func (list *List) IterList() {
 	}
 }
 
-// Init initialization
-func Init(name string) *List {
+// GetLIst initialization
+func GetList(name string) *List {
+	if globalList != nil {
+		fmt.Println("We already got the list!")
+		return globalList
+	}
 	list := new(List)
 	list.name = name
 	return list.initList()
@@ -59,12 +67,14 @@ func (list *List) initList() *List {
 	list.head = list.node
 	list.tail = list.head
 	list.size = 1
+	list.initialized = true
+	globalList = list
 	return list
 }
 
 // RunList function
 func RunList() {
-	list := Init("It`s a kkinda magic")
+	list := GetList("It`s a kkinda magic")
 	list.AddNode(50)
 	list.AddNode(100)
 	list.AddNode(755)
