@@ -91,13 +91,60 @@ func (list List) GetElement(position int) (int, bool) {
 
 }
 
-// RemoveElement from position
-func (list *List) RemoveElement(position int) bool {
+// RemoveElementByPosition from position
+func (list *List) RemoveElementByPosition(position int) bool {
+	if position >= list.size || position < 0 {
+		fmt.Println("Bad position!")
+
+		return false
+	}
+	if position == 0 {
+		node := list.head
+		list.head = node.next
+		node = nil
+		list.size--
+		return true
+	}
+	if position == list.size-1 {
+		node := list.tail
+		list.tail = node.prev
+		node.prev.next = nil
+		node = nil
+		list.size--
+		return true
+	}
+	node := list.head
+	var counter int
+	for node != nil {
+		if position == counter {
+			fmt.Println("Removing Node with value: ", node.value)
+			node.prev.next = node.next
+			node.next.prev = node.prev
+			node = nil
+			list.size--
+			return true
+		}
+		node = node.next
+		counter++
+	}
 	return false
+}
+
+// RemoveElementByValue removing first element
+func (list *List) RemoveElementByValue(value int) bool {
+	return false
+}
+
+func isEmpty(list List) bool {
+	return list.size == 0
 }
 
 // IterList iter through the list
 func IterList(list List) {
+	if isEmpty(list) {
+		fmt.Println("List is empty")
+		return
+	}
 	node := list.head
 	fmt.Println(list.name, " list")
 	fmt.Println("List size: ", list.size)
@@ -138,9 +185,14 @@ func (list *List) initList() *List {
 // RunList function
 func RunList() {
 	list := GetList("It`s a kkinda magic")
-	list.AddNode(50)
+	list.AddNode(13)
 	list.AddNode(100)
 	list.AddNode(755)
-	list.Contains(755)
-	//IterList(*list)
+	list.RemoveElementByPosition(0)
+	list.RemoveElementByPosition(0)
+	list.RemoveElementByPosition(1)
+	list.RemoveElementByPosition(1)
+	list.RemoveElementByPosition(0)
+	list.RemoveElementByPosition(1)
+	IterList(*list)
 }
