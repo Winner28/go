@@ -33,8 +33,61 @@ func (list *List) AddNode(value int) {
 	list.size++
 }
 
+// DeleteTail deletes last node and move the pointer to another element
+func (list *List) DeleteTail() {
+
+}
+
+// DeleteHead deletes first node and move head to the next element
+func (list *List) DeleteHead() {
+
+}
+
+// AddNodeToPosition adds node specified positionx
+func (list *List) AddNodeToPosition(position, value int) {
+
+}
+
+// ListContains element
+func (list List) ListContains(value int) bool {
+	return false
+}
+
+// GetElement from position
+func (list List) GetElement(position int) (int, bool) {
+	if position > list.size || position < 0 {
+		fmt.Println("Bad position!")
+		return -1, false
+	}
+	var counter int
+	if position > list.size/2 {
+		fmt.Println("Starts from an end")
+		node := list.tail
+		counter = list.size
+		for counter > position {
+			node = node.prev
+			counter--
+		}
+		fmt.Println("We got this value: ", node.value)
+		return node.value, true
+	}
+	node := list.head
+	for counter < position {
+		node = node.next
+		counter++
+	}
+	fmt.Println("We got this value: ", node.value)
+	return node.value, true
+
+}
+
+// RemoveElement from position
+func (list *List) RemoveElement(position int) bool {
+	return false
+}
+
 // IterList iter through the list
-func (list *List) IterList() {
+func IterList(list List) {
 	node := list.head
 	fmt.Println(list.name, " list")
 	fmt.Println("List size: ", list.size)
@@ -47,7 +100,7 @@ func (list *List) IterList() {
 	}
 }
 
-// GetLIst initialization
+// GetList initialization
 func GetList(name string) *List {
 	if globalList != nil {
 		fmt.Println("We already got the list!")
@@ -78,5 +131,6 @@ func RunList() {
 	list.AddNode(50)
 	list.AddNode(100)
 	list.AddNode(755)
-	list.IterList()
+	list.GetElement(1)
+	//IterList(*list)
 }
