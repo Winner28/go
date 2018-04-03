@@ -48,8 +48,18 @@ func (list *List) AddNodeToPosition(position, value int) {
 
 }
 
-// ListContains element
-func (list List) ListContains(value int) bool {
+// Contains element
+func (list List) Contains(value int) bool {
+	node := list.head
+	var counter int
+	for node != nil {
+		if node.value == value {
+			fmt.Printf("We found value on position: %v\n", counter)
+			return true
+		}
+		node = node.next
+		counter++
+	}
 	return false
 }
 
@@ -131,6 +141,6 @@ func RunList() {
 	list.AddNode(50)
 	list.AddNode(100)
 	list.AddNode(755)
-	list.GetElement(1)
+	list.Contains(755)
 	//IterList(*list)
 }
