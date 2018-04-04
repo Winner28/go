@@ -5,6 +5,8 @@ import (
 	"log"
 )
 
+// Simple realisation of A linked list data structure
+
 // Node represents a simple node
 type Node struct {
 	next  *Node
@@ -261,6 +263,18 @@ func (list *List) initList() *List {
 	list.initialized = true
 	globalList = list
 	return list
+}
+
+// WriteToFile function writes our node values and some information to a specified file
+// returns an error, if file path is bad
+func (list List) WriteToFile(path string) error {
+	return nil
+}
+
+// ReadFromFile function read information from file
+// returns an error, if file path is bad or file contains ...
+func ReadFromFile(path string) (*List, error) {
+	return nil, nil
 }
 
 // RunList function
