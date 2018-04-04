@@ -60,8 +60,33 @@ func (list *List) DeleteHead() {
 }
 
 // AddNodeToPosition adds node specified positionx
-func (list *List) AddNodeToPosition(position, value int) {
-
+func (list *List) AddNodeToPosition(position, value int) bool {
+	if list.isBadPosition(position) {
+		return false
+	}
+	node := list.head
+	var current int
+	for true {
+		if position == current {
+			newNode := new(Node)
+			newNode.value = value
+			if node.next != nil {
+				nextNode := node.next
+				node.next = newNode
+				newNode.prev = node
+				newNode.next = nextNode
+				nextNode.prev = newNode
+			} else {
+				node.next = newNode
+				newNode.prev = node
+			}
+			list.size++
+			return true
+		}
+		node = node.next
+		current++
+	}
+	return false
 }
 
 // Contains element
@@ -81,8 +106,7 @@ func (list List) Contains(value int) bool {
 
 // GetElement from position
 func (list List) GetElement(position int) (int, bool) {
-	if position > list.size || position < 0 {
-		fmt.Println("Bad position!")
+	if list.isBadPosition(position) {
 		return -1, false
 	}
 	var counter int
@@ -109,9 +133,7 @@ func (list List) GetElement(position int) (int, bool) {
 
 // RemoveElementByPosition from position
 func (list *List) RemoveElementByPosition(position int) bool {
-	if position >= list.size || position < 0 {
-		fmt.Println("Bad position!")
-
+	if list.isBadPosition(position) {
 		return false
 	}
 	if position == 0 {
@@ -146,13 +168,56 @@ func (list *List) RemoveElementByPosition(position int) bool {
 	return false
 }
 
-// RemoveElementByValue removing first element
+// RemoveElementByValue removing first element, return true if element is found and removed
 func (list *List) RemoveElementByValue(value int) bool {
+	if list.size == 1 && list.head.value == value {
+		list.head = nil
+		list.tail = nil
+		list.size--
+		return true
+	}
+	if list.head.value == value {
+		node := list.head
+		list.head = node.next
+		node = nil
+		list.size--
+		return true
+	}
+	if list.tail.value == value {
+		node := list.tail
+		list.tail = node.prev
+		list.tail.next = nil
+		node = nil
+		list.size--
+		return true
+	}
+	node := list.head.next
+	for node != nil {
+		if node.value == value {
+			node.prev.next = node.next
+			node.next.prev = node.prev
+			node = nil
+			list.size--
+			return true
+		}
+		node = node.next
+	}
+
+	log.Println("Such element didnt exists")
 	return false
 }
 
+// isEmpty func checks if list is empty
 func isEmpty(list List) bool {
 	return list.size == 0
+}
+
+func (list List) isBadPosition(position int) bool {
+	if position >= list.size || position < 0 {
+		log.Println("Bad position!")
+		return true
+	}
+	return false
 }
 
 // IterList iter through the list
@@ -204,6 +269,5 @@ func RunList() {
 	list.AddNode(13)
 	list.AddNode(100)
 	list.AddNode(755)
-
 	IterList(*list)
 }
