@@ -1,6 +1,9 @@
 package algos
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 // Node represents a simple node
 type Node struct {
@@ -35,12 +38,25 @@ func (list *List) AddNode(value int) {
 
 // DeleteTail deletes last node and move the pointer to another element
 func (list *List) DeleteTail() {
-
+	if !isEmpty(*list) {
+		node := list.tail
+		list.tail = node.prev
+		node.prev.next = nil
+		node = nil
+		list.size--
+		log.Println("Tail deleted")
+	}
 }
 
 // DeleteHead deletes first node and move head to the next element
 func (list *List) DeleteHead() {
-
+	if !isEmpty(*list) {
+		node := list.head
+		list.head = node.next
+		node = nil
+		list.size--
+		log.Println("Head deleted")
+	}
 }
 
 // AddNodeToPosition adds node specified positionx
@@ -188,11 +204,6 @@ func RunList() {
 	list.AddNode(13)
 	list.AddNode(100)
 	list.AddNode(755)
-	list.RemoveElementByPosition(0)
-	list.RemoveElementByPosition(0)
-	list.RemoveElementByPosition(1)
-	list.RemoveElementByPosition(1)
-	list.RemoveElementByPosition(0)
-	list.RemoveElementByPosition(1)
+
 	IterList(*list)
 }
