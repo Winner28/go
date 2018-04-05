@@ -38,6 +38,9 @@ func (list *List) AddNode(value int) {
 	list.node = node
 	list.tail = list.node
 	list.size++
+	if list.head == nil {
+		list.head = node
+	}
 }
 
 // DeleteTail deletes last node and move the pointer to another element
@@ -299,6 +302,31 @@ func getStringReprOfList(list List) string {
 		node = node.next
 	}
 	return repr
+}
+
+// GetSize return a list size
+func (list List) GetSize() int {
+	return list.size
+}
+
+// GetListName returns a list name
+func (list List) GetListName() string {
+	return list.name
+}
+
+// GetHead return head of a list
+func (list List) GetHead() Node {
+	return *list.head
+}
+
+// GetNodeValue returns node value
+func (node Node) GetNodeValue() int {
+	return node.value
+}
+
+// GetNextNode returns next node
+func (node Node) GetNextNode() Node {
+	return *node.next
 }
 
 // RunList function

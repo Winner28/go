@@ -7,6 +7,22 @@ import (
 	"interfaces"
 )
 
+type Fb interface {
+	Do()
+	private()
+}
+
+type str struct {
+}
+
+func (a str) Do() {
+
+}
+
+func (a str) private() {
+
+}
+
 func stack() {
 	fmt.Println("Work with Stack!")
 	stack := algos.InitStack([]int{1, 2}, "Regular stack!")
