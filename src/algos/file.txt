@@ -1,0 +1,8 @@
+List name: It`s a kkinda magic
+List size: 4
+List Node values:
+
+Value: 228
+Value: 13
+Value: 100
+Value: 755

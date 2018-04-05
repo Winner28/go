@@ -3,6 +3,8 @@ package algos
 import (
 	"fmt"
 	"log"
+	"os"
+	"strconv"
 )
 
 // Simple realisation of A linked list data structure
@@ -268,13 +270,35 @@ func (list *List) initList() *List {
 // WriteToFile function writes our node values and some information to a specified file
 // returns an error, if file path is bad
 func (list List) WriteToFile(path string) error {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		log.Println("File not exists!")
+		return err
+	}
+	file, _ := os.OpenFile(path, os.O_WRONLY|os.O_TRUNC, 0666)
+	defer file.Close()
+	bytesWritten, err := file.Write([]byte(getStringReprOfList(list)))
+	checkErr(err)
+	log.Printf("Wrote %d bytes.\n", bytesWritten)
 	return nil
 }
 
-// ReadFromFile function read information from file
-// returns an error, if file path is bad or file contains ...
-func ReadFromFile(path string) (*List, error) {
-	return nil, nil
+func checkErr(err error) {
+	if err != nil {
+		log.Println("Problems with file")
+	}
+}
+
+func getStringReprOfList(list List) string {
+	var repr string
+	repr = "List name: " + list.name + "\n"
+	repr += "List size: " + strconv.Itoa(list.size) + "\n"
+	repr += "List Node values:\n\n"
+	node := list.head
+	for node != nil {
+		repr += "Value: " + strconv.Itoa(node.value) + "\n"
+		node = node.next
+	}
+	return repr
 }
 
 // RunList function
@@ -283,5 +307,6 @@ func RunList() {
 	list.AddNode(13)
 	list.AddNode(100)
 	list.AddNode(755)
-	IterList(*list)
+	list.WriteToFile("algos/file.txt")
+	//IterList(*list)
 }
