@@ -5,23 +5,8 @@ import (
 	"cli"
 	"fmt"
 	"interfaces"
+	"web/simple"
 )
-
-type Fb interface {
-	Do()
-	private()
-}
-
-type str struct {
-}
-
-func (a str) Do() {
-
-}
-
-func (a str) private() {
-
-}
 
 func stack() {
 	fmt.Println("Work with Stack!")
@@ -47,6 +32,10 @@ func algosListRunner() {
 	algos.RunList()
 }
 
+func startSimpleServer() {
+	simple.StartSimpleServer(8181)
+}
+
 func main() {
-	algosListRunner()
+	startSimpleServer()
 }

@@ -34,6 +34,9 @@ func TestList(t *testing.T) {
 		}
 		node = node.GetNextNode()
 	}
+	if !testList.Contains(5) {
+		t.Error("Error")
+	}
 }
 
 func assertEquals(expected, actual interface{}) bool {
