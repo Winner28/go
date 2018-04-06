@@ -67,6 +67,21 @@ func stuffEndPoint(res http.ResponseWriter, req *http.Request) {
 			fmt.Fprint(res, stuff.toString())
 		}
 	} else if req.Method == "POST" {
+		values := req.URL.Query()
+		name := values.Get("name")
+		price := values.Get("price")
+		if name == "" && price == "" {
+			fmt.Fprint(res, "Price or name are empty")
+			return
+		}
+		message, ok := addStuff(name, price)
+		if !ok {
+			fmt.Fprint(res, message)
+		} else {
+			fmt.Fprint(res, message)
+			stuff, _, _ := getStaffWithSpecifiedID(strconv.Itoa(len(stuffs)))
+			fmt.Fprint(res, stuff.toString())
+		}
 
 	} else if req.Method == "PUT" {
 
@@ -96,15 +111,41 @@ func removeStuffByID(id string) (string, bool) {
 	for index, value := range stuffs {
 		if value.ID == ID {
 			removeStuffByPosition(index)
-
 			return "Success", true
 		}
 	}
 	return "We dont have stuff with such ID", false
 }
 
+func addStuff(name string, price string) (string, bool) {
+	Price, err := strconv.Atoi(price)
+	if err != nil {
+		return "Price is bad specified!", false
+	}
+	newStuff := Stuff{
+		ID:    len(stuffs) + 1,
+		name:  name,
+		price: Price,
+	}
+	stuffs = append(stuffs, newStuff)
+	return "Item successfully added!\n", true
+}
+
 func removeStuffByPosition(index int) {
 	stuffs = append(stuffs[:index], stuffs[index+1:]...)
+}
+
+func getAllStuff(resp http.ResponseWriter, req *http.Request) {
+	fmt.Fprint(resp, getStringReprOfAllStuff())
+}
+
+func getStringReprOfAllStuff() string {
+	var toReturn string
+	toReturn = "Our available stuff: \n"
+	for _, value := range stuffs {
+		toReturn += value.toString()
+	}
+	return toReturn
 }
 
 // StartSimpleServer start
@@ -116,6 +157,7 @@ func StartSimpleServer(port int) {
 	server := &http.Server{Addr: Port}
 	go listenForShutDown(server, ch)
 	http.HandleFunc("/stuff", stuffEndPoint)
+	http.HandleFunc("/stuff/all", getAllStuff)
 	server.ListenAndServe()
 }
 
