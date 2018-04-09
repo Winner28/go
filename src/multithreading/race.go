@@ -82,6 +82,8 @@ func RunSimpleChan() {
 	for {
 		select {
 		case buff := <-echo:
+
+			os.Stdout.Write([]byte("I have read: "))
 			os.Stdout.Write(buff)
 		case <-done:
 			fmt.Println("Timer ends!")

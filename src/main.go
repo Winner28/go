@@ -38,7 +38,7 @@ func startSimpleServer() {
 	simple.StartSimpleServer(8181)
 }
 
-func brokenStorage() {
+func goodStorage() {
 	storage.RunStorageProg()
 }
 
@@ -47,5 +47,5 @@ func runSimpleEcho() {
 }
 
 func main() {
-	multithreading.RunSimpleChan()
+	goodStorage()
 }
