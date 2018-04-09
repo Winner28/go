@@ -47,5 +47,5 @@ func runSimpleEcho() {
 }
 
 func main() {
-	brokenStorage()
+	multithreading.RunSimpleChan()
 }

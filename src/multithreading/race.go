@@ -71,3 +71,31 @@ func RunSimpleEcho() {
 func echo(in io.Reader, out io.Writer) {
 	io.Copy(out, in)
 }
+
+// RunSimpleChan runs simple chan
+func RunSimpleChan() {
+	done := time.After(30 * time.Second)
+	echo := make(chan []byte)
+
+	go readStdin(echo)
+
+	for {
+		select {
+		case buff := <-echo:
+			os.Stdout.Write(buff)
+		case <-done:
+			fmt.Println("Timer ends!")
+			os.Exit(0)
+		}
+	}
+}
+
+func readStdin(ch chan<- []byte) {
+	for {
+		data := make([]byte, 1024)
+		l, _ := os.Stdin.Read(data)
+		if l > 0 {
+			ch <- data
+		}
+	}
+}
