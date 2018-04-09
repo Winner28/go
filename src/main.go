@@ -5,6 +5,8 @@ import (
 	"cli"
 	"fmt"
 	"interfaces"
+	"multithreading"
+	"multithreading/storage"
 	"web/simple"
 )
 
@@ -36,6 +38,14 @@ func startSimpleServer() {
 	simple.StartSimpleServer(8181)
 }
 
+func brokenStorage() {
+	storage.RunStorageProg()
+}
+
+func runSimpleEcho() {
+	multithreading.RunSimpleEcho()
+}
+
 func main() {
-	startSimpleServer()
+	brokenStorage()
 }

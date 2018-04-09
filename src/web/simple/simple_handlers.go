@@ -84,6 +84,7 @@ func stuffEndPoint(res http.ResponseWriter, req *http.Request) {
 		}
 
 	} else if req.Method == "PUT" {
+		panic("Unsopported Operation Error")
 
 	} else if req.Method == "DELETE" {
 		stuffID := req.URL.Query().Get("id")
