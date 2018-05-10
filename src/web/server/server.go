@@ -12,5 +12,4 @@ func init() {
 	s = &server{
 		router: gin.Default(),
 	}
-
 }
