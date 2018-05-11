@@ -25,5 +25,6 @@ func getDB() *database {
 func (db *database) getBook(ID int) models.Book {
 	var book models.Book
 	db.DB.First(&book, ID)
+
 	return book
 }
