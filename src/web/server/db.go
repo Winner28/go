@@ -1,19 +1,29 @@
 package server
 
 import (
+	"web/server/models"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
-var db *gorm.DB
+type database struct {
+	DB *gorm.DB
+}
 
-func getDB() *gorm.DB {
-	if db == nil {
-		var err error
-		db, err = gorm.Open("mysql", "root:12345678@/test?charset=utf8&parseTime=True&loc=Local")
-		if err != nil {
-			panic("failed to connect database")
-		}
+func getDB() *database {
+	db, err := gorm.Open("mysql", "root:12345678@/test?charset=utf8&parseTime=True&loc=Local")
+	if err != nil {
+		panic(err)
 	}
-	return db
+
+	return &database{
+		DB: db,
+	}
+}
+
+func (db *database) getBook(ID int) models.Book {
+	var book models.Book
+	db.DB.First(&book, ID)
+	return book
 }

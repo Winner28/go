@@ -1,26 +1,23 @@
 package server
 
 import (
+	"net/http"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 )
 
 type server struct {
 	router *gin.Engine
-	db     *gorm.DB
-}
-
-var s *server
-
-func init() {
-	s = &server{
-		router: gin.Default(),
-		db:     getDB(),
-	}
+	db     *database
 }
 
 // StartServer func
 func StartServer() {
+	s := &server{
+		router: gin.Default(),
+		db:     getDB(),
+	}
 	s.routes()
 	s.router.Run("localhost:8080")
 }
@@ -32,29 +29,35 @@ func (s *server) routes() {
 }
 
 func (s *server) setUpBookRoutes(bookRoutes *gin.RouterGroup) {
-	bookRoutes.POST("/", createBook)
-	bookRoutes.GET("/", fetchBooks)
-	bookRoutes.GET("/:id", fetchBook)
-	bookRoutes.PUT("/:id", updateBook)
-	bookRoutes.DELETE("/:id", deleteBook)
+	bookRoutes.POST("/", s.createBook)
+	bookRoutes.GET("/", s.fetchBooks)
+	bookRoutes.GET("/:id", s.fetchBook)
+	bookRoutes.PUT("/:id", s.updateBook)
+	bookRoutes.DELETE("/:id", s.deleteBook)
 }
 
-func createBook(c *gin.Context) {
-
-}
-
-func fetchBooks(c *gin.Context) {
+func (s *server) createBook(c *gin.Context) {
 
 }
 
-func fetchBook(c *gin.Context) {
+func (s *server) fetchBooks(c *gin.Context) {
 
 }
 
-func updateBook(c *gin.Context) {
+func (s *server) fetchBook(c *gin.Context) {
+	bookID, _ := strconv.Atoi(c.Param("id"))
+	book := s.db.getBook(bookID)
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusOK,
+		"data":   book,
+	})
 
 }
 
-func deleteBook(c *gin.Context) {
+func (s *server) updateBook(c *gin.Context) {
+
+}
+
+func (s *server) deleteBook(c *gin.Context) {
 
 }
