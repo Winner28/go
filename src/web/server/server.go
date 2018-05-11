@@ -19,9 +19,16 @@ func init() {
 	}
 }
 
+// StartServer func
+func StartServer() {
+	s.routes()
+	s.router.Run("localhost:8080")
+}
+
 func (s *server) routes() {
 	bookRoutes := s.router.Group("/books")
 	s.setUpBookRoutes(bookRoutes)
+
 }
 
 func (s *server) setUpBookRoutes(bookRoutes *gin.RouterGroup) {

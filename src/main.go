@@ -7,6 +7,7 @@ import (
 	"interfaces"
 	"multithreading"
 	"multithreading/storage"
+	"web/server"
 	"web/simple"
 )
 
@@ -47,5 +48,5 @@ func runSimpleEcho() {
 }
 
 func main() {
-	goodStorage()
+	server.StartServer()
 }
