@@ -28,3 +28,7 @@ func (db *database) getBook(ID int) models.Book {
 
 	return book
 }
+
+func (db *database) getBooks() []models.Book {
+	return nil
+}
