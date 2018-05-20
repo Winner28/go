@@ -22,13 +22,20 @@ func getDB() *database {
 	}
 }
 
-func (db *database) getBook(ID int) models.Book {
+func (db *database) fetchBook(ID int) models.Book {
 	var book models.Book
-	db.DB.First(&book, ID)
+	if err := db.DB.First(&book, ID).Error; err != nil {
+		panic(err)
+	}
 
 	return book
 }
 
-func (db *database) getBooks() []models.Book {
-	return nil
+func (db *database) fetchBooks() []models.Book {
+	var books []models.Book
+	if err := db.DB.Find(&books).Error; err != nil {
+		panic(err)
+	}
+
+	return books
 }

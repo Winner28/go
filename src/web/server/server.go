@@ -22,6 +22,7 @@ func StartServer() {
 	s.router.Run("localhost:8080")
 }
 
+// SetUp routes
 func (s *server) routes() {
 	bookRoutes := s.router.Group("/books")
 	s.setUpBookRoutes(bookRoutes)
@@ -41,12 +42,16 @@ func (s *server) createBook(c *gin.Context) {
 }
 
 func (s *server) fetchBooks(c *gin.Context) {
-
+	books := s.db.fetchBooks()
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusOK,
+		"data":   books,
+	})
 }
 
 func (s *server) fetchBook(c *gin.Context) {
 	bookID, _ := strconv.Atoi(c.Param("id"))
-	book := s.db.getBook(bookID)
+	book := s.db.fetchBook(bookID)
 	c.JSON(http.StatusOK, gin.H{
 		"status": http.StatusOK,
 		"data":   book,
