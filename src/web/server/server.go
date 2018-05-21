@@ -66,7 +66,9 @@ func (s *server) fetchBook(c *gin.Context) {
 }
 
 func (s *server) updateBook(c *gin.Context) {
-
+	book := getBookModel(c.PostForm("title"), c.PostForm("author"))
+	book.ID, _ = strconv.Atoi(c.Param("id"))
+	s.db.updateBook(book)
 }
 
 func (s *server) deleteBook(c *gin.Context) {

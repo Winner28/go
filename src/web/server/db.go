@@ -43,22 +43,31 @@ func (db *database) fetchBooks() []models.Book {
 }
 
 func (db *database) createBook(book *models.Book) {
-	db.DB.Save(&book)
+	if err := db.DB.Create(&book).Error; err != nil {
+		panic(err)
+	}
 }
 
 func (db *database) deleteBook(ID int) (status int, err error) {
-
 	book := db.fetchBook(ID)
 	if book.ID == 0 {
 		return http.StatusNotFound, errors.New("We dont have book with such ID")
 	}
 	if err = db.DB.Delete(&book).Error; err != nil {
-		return http.StatusInternalServerError, errors.New("Internal Server Error")
+		return http.StatusInternalServerError, err
 	}
 
 	return http.StatusOK, nil
 }
 
-func (db *database) updateBook(book models.Book) {
-	panic("Not implemented")
+func (db *database) updateBook(book models.Book) (status int, err error) {
+	oldBook := db.fetchBook(book.ID)
+	if oldBook.ID == 0 {
+		return http.StatusNotFound, errors.New("We dont have book with such ID")
+	}
+	if err = db.DB.Save(&book).Error; err != nil {
+		return http.StatusInternalServerError, err
+	}
+
+	return http.StatusOK, nil
 }

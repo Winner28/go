@@ -47,6 +47,10 @@ func runSimpleEcho() {
 	multithreading.RunSimpleEcho()
 }
 
-func main() {
+func runBookStoreServer() {
 	server.StartServer()
+}
+
+func main() {
+	runBookStoreServer()
 }
