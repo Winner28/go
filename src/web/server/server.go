@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 	"strconv"
+	"web/server/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -38,6 +39,11 @@ func (s *server) setUpBookRoutes(bookRoutes *gin.RouterGroup) {
 }
 
 func (s *server) createBook(c *gin.Context) {
+	book := getBookModel(c.PostForm("title"), c.PostForm("author"))
+	s.db.createBook(&book)
+	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated,
+		"message":    "Book created!",
+		"resourceId": book.ID})
 
 }
 
@@ -64,5 +70,17 @@ func (s *server) updateBook(c *gin.Context) {
 }
 
 func (s *server) deleteBook(c *gin.Context) {
+	bookID, _ := strconv.Atoi(c.PostForm("ID"))
+	status, err := s.db.deleteBook(bookID)
+	c.JSON(status, gin.H{
+		"status":  status,
+		"message": err.Error,
+	})
+}
 
+func getBookModel(title, author string) models.Book {
+	return models.Book{
+		Title:  title,
+		Author: author,
+	}
 }

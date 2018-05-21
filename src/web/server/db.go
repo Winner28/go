@@ -1,6 +1,8 @@
 package server
 
 import (
+	"errors"
+	"net/http"
 	"web/server/models"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -38,4 +40,25 @@ func (db *database) fetchBooks() []models.Book {
 	}
 
 	return books
+}
+
+func (db *database) createBook(book *models.Book) {
+	db.DB.Save(&book)
+}
+
+func (db *database) deleteBook(ID int) (status int, err error) {
+
+	book := db.fetchBook(ID)
+	if book.ID == 0 {
+		return http.StatusNotFound, errors.New("We dont have book with such ID")
+	}
+	if err = db.DB.Delete(&book).Error; err != nil {
+		return http.StatusInternalServerError, errors.New("Internal Server Error")
+	}
+
+	return http.StatusOK, nil
+}
+
+func (db *database) updateBook(book models.Book) {
+	panic("Not implemented")
 }
