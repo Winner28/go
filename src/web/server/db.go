@@ -9,6 +9,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// Database struct
 type database struct {
 	DB *gorm.DB
 }
